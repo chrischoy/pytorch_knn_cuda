@@ -15,7 +15,7 @@ TORCH_FFI_TARGET := $(BUILD_DIR)/knn_pytorch/_knn_pytorch.so
 
 INCLUDE_FLAGS := $(foreach d, $(INCLUDE_DIRS), -I$d)
 
-DEBUB := 1
+DEBUB := 0
 
 # Debugging
 ifeq ($(DEBUG), 1)

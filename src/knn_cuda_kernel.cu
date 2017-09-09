@@ -15,7 +15,7 @@
 
 // Constants used by the program
 #define BLOCK_DIM                      16
-#define DEBUG 1
+#define DEBUG                          0
 
 /**
   * Computes the distance between two matrix A (reference points) and
