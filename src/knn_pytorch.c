@@ -8,20 +8,20 @@ int knn(THCudaTensor *ref_tensor, THCudaTensor *query_tensor,
 
   THCAssertSameGPU(THCudaTensor_checkGPU(state, 4, idx_tensor, dist_tensor, ref_tensor, query_tensor));
   long ref_nb, query_nb, dim, k;
-  THArgCheck(ref_tensor->nDimension == 2 , 0, "ref_tensor: 2D Tensor expected");
-  THArgCheck(query_tensor->nDimension == 2 , 1, "query_tensor: 2D Tensor expected");
-  THArgCheck(idx_tensor->nDimension == 2 , 3, "idx_tensor: 2D Tensor expected");
-  THArgCheck(dist_tensor->nDimension == 2 , 4, "dist_tensor: 2D Tensor expected");
-  THArgCheck(ref_tensor->size[0] == query_tensor->size[0], 0, "input sizes must match");
-  THArgCheck(idx_tensor->size[0] == dist_tensor->size[0], 0, "output sizes must match");
+  THArgCheck(THCudaTensor_nDimension(state, ref_tensor) == 2 , 0, "ref_tensor: 2D Tensor expected");
+  THArgCheck(THCudaTensor_nDimension(state, query_tensor) == 2 , 1, "query_tensor: 2D Tensor expected");
+  THArgCheck(THCudaLongTensor_nDimension(state, idx_tensor) == 2 , 3, "idx_tensor: 2D Tensor expected");
+  THArgCheck(THCudaTensor_nDimension(state, dist_tensor) == 2 , 4, "dist_tensor: 2D Tensor expected");
+  THArgCheck(THCudaTensor_size(state, ref_tensor, 0) == THCudaTensor_size(state, query_tensor,0), 0, "input sizes must match");
+  THArgCheck(THCudaLongTensor_size(state, idx_tensor, 0) == THCudaTensor_size(state, dist_tensor,0), 0, "output sizes must match");
 
   ref_tensor = THCudaTensor_newContiguous(state, ref_tensor);
   query_tensor = THCudaTensor_newContiguous(state, query_tensor);
 
-  dim = ref_tensor->size[0];
-  k = idx_tensor->size[0];
-  ref_nb = ref_tensor->size[1];
-  query_nb = query_tensor->size[1];
+  dim = THCudaTensor_size(state, ref_tensor, 0);
+  k = THCudaLongTensor_size(state, idx_tensor, 0);
+  ref_nb = THCudaTensor_size(state, ref_tensor, 1);
+  query_nb = THCudaTensor_size(state, query_tensor, 1);
 
   float *ref_dev = THCudaTensor_data(state, ref_tensor);
   float *query_dev = THCudaTensor_data(state, query_tensor);

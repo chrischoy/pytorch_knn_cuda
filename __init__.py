@@ -6,7 +6,7 @@ import knn_pytorch
 
 
 class KNearestNeighbor(Function):
-  """Accumulate x += y using broadcasting sum.
+  """ Compute k nearest neighbors for each query point.
   """
   def __init__(self, k):
     self.k = k
@@ -15,8 +15,8 @@ class KNearestNeighbor(Function):
     ref = ref.float().cuda()
     query = query.float().cuda()
 
-    inds = torch.zeros(self.k, query.shape[1]).long().cuda()
-    dists = torch.zeros(self.k, query.shape[1]).float().cuda()
+    inds = torch.empty(self.k, query.shape[1]).long().cuda()
+    dists = torch.empty(self.k, query.shape[1]).float().cuda()
 
     knn_pytorch.knn(ref, query, inds, dists)
 
